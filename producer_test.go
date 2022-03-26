@@ -1,4 +1,4 @@
-package producer
+package main
 
 import (
 	"fmt"
@@ -26,7 +26,7 @@ func TestNewProducer(t *testing.T) {
 				result     []int
 			)
 
-			NewProducer(test.from, test.to)(ports)
+			newProducer(test.from, test.to)(ports)
 
 			assert.Equal(t, chanLength, cap(ports))
 			assert.Equal(t, chanLength, len(ports))
@@ -55,7 +55,7 @@ func TestProducerPanicWhenUsingInvalidPorts(t *testing.T) {
 			var ports = make(chan int, 2)
 
 			assert.Panicsf(t, func() {
-				NewProducer(test.from, test.to)(ports)
+				newProducer(test.from, test.to)(ports)
 			}, "invalid ports range, ports can be in range from 1 to 65535")
 		})
 	}
@@ -76,7 +76,7 @@ func TestProducerPanicWhenUsingInvalidRange(t *testing.T) {
 			var ports = make(chan int, 10)
 
 			assert.Panicsf(t, func() {
-				NewProducer(test.from, test.to)(ports)
+				newProducer(test.from, test.to)(ports)
 			}, "to must be greater than from")
 		})
 	}

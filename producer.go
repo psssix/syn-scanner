@@ -1,4 +1,4 @@
-package producer
+package main
 
 import "fmt"
 
@@ -7,7 +7,7 @@ const (
 	maxPortNumber = 65535
 )
 
-func NewProducer(from, to int) func(ports chan<- int) {
+func newProducer(from, to int) func(ports chan<- int) {
 	return func(ports chan<- int) {
 		defer close(ports)
 		if from < minPortNumber || from > maxPortNumber || to < minPortNumber || to > maxPortNumber {
