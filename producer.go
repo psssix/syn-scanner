@@ -15,7 +15,7 @@ func newProducer(from, to int) func(ports chan<- int) {
 				minPortNumber, maxPortNumber))
 		}
 		if from > to {
-			panic("to must be greater than from")
+			panic("'to' must be greater than 'from'")
 		}
 
 		for i := from; i <= to; i++ {
