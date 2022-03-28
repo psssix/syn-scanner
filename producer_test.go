@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestNewProducer(t *testing.T) {
+func TestProducer(t *testing.T) {
 	tests := []struct {
 		from   int
 		to     int
@@ -19,18 +19,14 @@ func TestNewProducer(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(fmt.Sprintf("create producer for %d, %d range", test.from, test.to), func(t *testing.T) {
-			var (
-				chanLength = test.to - test.from + 1
-				ports      = make(chan int, chanLength)
-				result     []int
-			)
+		t.Run(fmt.Sprintf("producer for %d, %d range", test.from, test.to), func(t *testing.T) {
+			chanLength := test.to - test.from + 1
+			ports := make(chan int, chanLength)
+			var result []int
 
 			newProducer(test.from, test.to)(ports)
 
-			assert.Equal(t, chanLength, cap(ports))
 			assert.Equal(t, chanLength, len(ports))
-
 			for port := range ports {
 				result = append(result, port)
 			}
@@ -51,12 +47,12 @@ func TestProducerPanicWhenUsingInvalidPorts(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(fmt.Sprintf("create producer for %d, %d range", test.from, test.to), func(t *testing.T) {
-			var ports = make(chan int, 2)
-
-			assert.Panicsf(t, func() {
-				newProducer(test.from, test.to)(ports)
-			}, "invalid ports range, ports can be in range from 1 to 65535")
+		t.Run(fmt.Sprintf("producer for %d, %d range", test.from, test.to), func(t *testing.T) {
+			ports := make(chan int, 2)
+			assert.PanicsWithValue(t, "invalid ports range, ports can be in range from 1 to 65535",
+				func() {
+					newProducer(test.from, test.to)(ports)
+				})
 		})
 	}
 }
@@ -68,16 +64,16 @@ func TestProducerPanicWhenUsingInvalidRange(t *testing.T) {
 		to   int
 	}{
 		{10, 1},
-		{65535, 65536},
+		{65535, 65526},
 	}
 
 	for _, test := range tests {
-		t.Run(fmt.Sprintf("create producer for %d, %d range", test.from, test.to), func(t *testing.T) {
-			var ports = make(chan int, 10)
-
-			assert.Panicsf(t, func() {
-				newProducer(test.from, test.to)(ports)
-			}, "to must be greater than from")
+		t.Run(fmt.Sprintf("producer for %d, %d range", test.from, test.to), func(t *testing.T) {
+			ports := make(chan int, 10)
+			assert.PanicsWithValue(t, "to must be greater than from",
+				func() {
+					newProducer(test.from, test.to)(ports)
+				})
 		})
 	}
 }
