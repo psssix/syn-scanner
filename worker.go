@@ -9,8 +9,8 @@ type dialer interface {
 	Dial(network, address string) (net.Conn, error)
 }
 
-func newWorker(target string, d dialer) func(ports <-chan int, opened chan<- int) {
-	return func(ports <-chan int, opened chan<- int) {
+func newWorker(d dialer) func(target string, ports <-chan int, opened chan<- int) {
+	return func(target string, ports <-chan int, opened chan<- int) {
 		defer close(opened)
 		for port := range ports {
 			address := fmt.Sprintf("%s:%d", target, port)

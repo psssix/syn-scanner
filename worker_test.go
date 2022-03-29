@@ -35,7 +35,7 @@ func TestWorkerDials(t *testing.T) {
 			}
 			close(ports)
 
-			newWorker(test.target, dialer)(ports, opened)
+			newWorker(dialer)(test.target, ports, opened)
 
 			var actualOpened []int
 			for port := range opened {
@@ -81,7 +81,7 @@ func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 	}
 	close(ports)
 
-	newWorker(target, dialer)(ports, opened)
+	newWorker(dialer)(target, ports, opened)
 
 	var actualOpened []int
 	for port := range opened {
@@ -112,6 +112,6 @@ func TestWorkerPanicsWhenConnectionIsNotClose(t *testing.T) {
 
 	assert.PanicsWithValue(t, "can't close opened connection for test.local:80",
 		func() {
-			newWorker(target, dialer)(ports, opened)
+			newWorker(dialer)(target, ports, opened)
 		})
 }

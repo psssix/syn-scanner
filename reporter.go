@@ -8,8 +8,8 @@ type printer interface {
 	Printf(format string, args ...interface{})
 }
 
-func newReporter(target string, p printer) func(opened <-chan int) {
-	return func(opened <-chan int) {
+func newReporter(p printer) func(target string, opened <-chan int) {
+	return func(target string, opened <-chan int) {
 		p.Printf("scanning: %s opened ports: ", target)
 		firstPrint := true
 		for port := range opened {

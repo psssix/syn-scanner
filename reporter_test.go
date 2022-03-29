@@ -32,7 +32,7 @@ func TestReporterPrints(t *testing.T) {
 			}
 			close(opened)
 
-			newReporter(test.target, printer)(opened)
+			newReporter(printer)(test.target, opened)
 
 			printer.AssertExpectations(t)
 		})
@@ -49,7 +49,7 @@ func TestReporterPrintsWhenNoPortOpen(t *testing.T) {
 	opened := make(chan int)
 	close(opened)
 
-	newReporter(target, printer)(opened)
+	newReporter(printer)(target, opened)
 
 	printer.AssertExpectations(t)
 }
