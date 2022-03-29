@@ -93,7 +93,7 @@ func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 	}
 }
 
-func TestWorkerPanicWhenConnectionIsNotClose(t *testing.T) {
+func TestWorkerPanicsWhenConnectionIsNotClose(t *testing.T) {
 	target := "test.local"
 	port := 80
 

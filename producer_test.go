@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestProducerGenerateRange(t *testing.T) {
+func TestProducerGeneratesRange(t *testing.T) {
 	tests := []struct {
 		from     int
 		to       int
@@ -19,7 +19,7 @@ func TestProducerGenerateRange(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(fmt.Sprintf("producer for %d-%d range", test.from, test.to), func(t *testing.T) {
+		t.Run(fmt.Sprintf("produce for %d-%d range", test.from, test.to), func(t *testing.T) {
 			ports := make(chan int, test.to-test.from+1)
 
 			newProducer(test.from, test.to)(ports)
@@ -33,16 +33,16 @@ func TestProducerGenerateRange(t *testing.T) {
 	}
 }
 
-func TestProducerPanicWhenUsingInvalidPorts(t *testing.T) {
+func TestProducerPanicsWhenUsingInvalidPorts(t *testing.T) {
 	tests := []struct {
 		name string
 		from int
 		to   int
 	}{
-		{"producer with from less that 1", 0, 1},
-		{"producer with from greater that 65535", 65536, 65535},
-		{"producer with to less that 1", 1, 0},
-		{"producer with to greater that 65535", 65535, 65536},
+		{"produce with 'from' less that 1", 0, 1},
+		{"produce with 'from' greater that 65535", 65536, 65535},
+		{"produce with 'to' less that 1", 1, 0},
+		{"produce with 'to' greater that 65535", 65535, 65536},
 	}
 
 	for _, test := range tests {
@@ -56,7 +56,7 @@ func TestProducerPanicWhenUsingInvalidPorts(t *testing.T) {
 	}
 }
 
-func TestProducerPanicWhenUsingInvalidRange(t *testing.T) {
+func TestProducerPanicsWhenUsingInvalidRange(t *testing.T) {
 	tests := []struct {
 		from int
 		to   int
@@ -66,7 +66,7 @@ func TestProducerPanicWhenUsingInvalidRange(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(fmt.Sprintf("producer for %d-%d range", test.from, test.to), func(t *testing.T) {
+		t.Run(fmt.Sprintf("produce for %d-%d range", test.from, test.to), func(t *testing.T) {
 			ports := make(chan int)
 			assert.PanicsWithValue(t, "'to' must be greater than 'from'",
 				func() {
