@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestProducer(t *testing.T) {
+func TestProducerGenerateRange(t *testing.T) {
 	tests := []struct {
 		from     int
 		to       int

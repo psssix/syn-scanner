@@ -24,13 +24,13 @@ func TestWorkerDials(t *testing.T) {
 			opened := make(chan int, len(test.ports))
 			dialer := new(mocks.Dialer)
 			var connections []*mocks.Connection
-			for at, port := range test.ports {
+			for _, port := range test.ports {
 				ports <- port
 
 				address := fmt.Sprintf("%s:%d", test.target, port)
 				c := new(mocks.Connection)
 				c.On("Close").Return(nil)
-				dialer.On("Dial", "tcp", address).Times(at).Return(c, nil)
+				dialer.On("Dial", "tcp", address).Return(c, nil)
 				connections = append(connections, c)
 			}
 			close(ports)
@@ -49,7 +49,7 @@ func TestWorkerDials(t *testing.T) {
 	}
 }
 
-func TestWorkerWhenConnectionIsNotOpen(t *testing.T) {
+func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 	target := "test.local"
 	targetPorts := []struct {
 		number     int
@@ -65,18 +65,18 @@ func TestWorkerWhenConnectionIsNotOpen(t *testing.T) {
 	var expectedOpened []int
 	dialer := new(mocks.Dialer)
 	var connections []*mocks.Connection
-	for at, port := range targetPorts {
+	for _, port := range targetPorts {
 		ports <- port.number
 		address := fmt.Sprintf("%s:%d", target, port.number)
 		if port.canConnect {
 			expectedOpened = append(expectedOpened, port.number)
 			c := new(mocks.Connection)
 			c.On("Close").Return(nil)
-			dialer.On("Dial", "tcp", address).Times(at).Return(c, nil)
+			dialer.On("Dial", "tcp", address).Return(c, nil)
 			connections = append(connections, c)
 		} else {
 			err := &net.OpError{Op: "dial", Net: "tcp", Source: nil, Addr: nil, Err: nil}
-			dialer.On("Dial", "tcp", address).Times(at).Return(nil, err)
+			dialer.On("Dial", "tcp", address).Return(nil, err)
 		}
 	}
 	close(ports)

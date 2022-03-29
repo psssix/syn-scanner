@@ -1,6 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"net"
+)
+
+type dialer interface {
+	Dial(network, address string) (net.Conn, error)
+}
 
 func newWorker(target string, d dialer) func(ports <-chan int, opened chan<- int) {
 	return func(ports <-chan int, opened chan<- int) {
