@@ -40,7 +40,7 @@ func TestReporterPrints(t *testing.T) {
 }
 
 func TestReporterPrintsWhenNoPortOpen(t *testing.T) {
-	target := "test.local"
+	const target = "test.local"
 
 	printer := new(mocks.Printer)
 	printer.On("Printf", "scanning: %s opened ports: ", []interface{}{target})

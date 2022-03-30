@@ -52,7 +52,7 @@ func TestWorkerDials(t *testing.T) {
 }
 
 func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
-	target := "test.local"
+	const target = "test.local"
 	targetPorts := []struct {
 		number     int
 		canConnect bool
@@ -99,8 +99,8 @@ func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 }
 
 func TestWorkerPanicsWhenConnectionIsNotClose(t *testing.T) {
-	target := "test.local"
-	port := 80
+	const target = "test.local"
+	const port = 80
 
 	ports := make(chan int, 1)
 	opened := make(chan int)
