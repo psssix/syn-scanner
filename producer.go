@@ -9,7 +9,6 @@ const (
 
 func newProducer() func(from, to int, ports chan<- int) {
 	return func(from, to int, ports chan<- int) {
-		defer close(ports)
 		if from < minPortNumber || from > maxPortNumber || to < minPortNumber || to > maxPortNumber {
 			panic(fmt.Sprintf("invalid ports range, ports can be in range from %d to %d",
 				minPortNumber, maxPortNumber))

@@ -26,8 +26,8 @@ func TestWorkerDials(t *testing.T) {
 			var connections []*mocks.Connection
 			for _, port := range test.ports {
 				ports <- port
-
 				address := fmt.Sprintf("%s:%d", test.target, port)
+
 				c := new(mocks.Connection)
 				c.On("Close").Return(nil)
 				dialer.On("Dial", "tcp", address).Return(c, nil)
@@ -36,12 +36,14 @@ func TestWorkerDials(t *testing.T) {
 			close(ports)
 
 			newWorker(dialer)(test.target, ports, opened)
+			close(opened)
 
 			var actualOpened []int
 			for port := range opened {
 				actualOpened = append(actualOpened, port)
 			}
 			assert.Equal(t, test.ports, actualOpened)
+			dialer.AssertExpectations(t)
 			for _, c := range connections {
 				c.AssertExpectations(t)
 			}
@@ -68,6 +70,7 @@ func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 	for _, port := range targetPorts {
 		ports <- port.number
 		address := fmt.Sprintf("%s:%d", target, port.number)
+
 		if port.canConnect {
 			expectedOpened = append(expectedOpened, port.number)
 			c := new(mocks.Connection)
@@ -82,12 +85,14 @@ func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 	close(ports)
 
 	newWorker(dialer)(target, ports, opened)
+	close(opened)
 
 	var actualOpened []int
 	for port := range opened {
 		actualOpened = append(actualOpened, port)
 	}
 	assert.Equal(t, expectedOpened, actualOpened)
+	dialer.AssertExpectations(t)
 	for _, c := range connections {
 		c.AssertExpectations(t)
 	}
@@ -99,6 +104,7 @@ func TestWorkerPanicsWhenConnectionIsNotClose(t *testing.T) {
 
 	ports := make(chan int, 1)
 	opened := make(chan int, 1)
+	close(opened)
 
 	ports <- port
 	close(ports)
@@ -114,4 +120,6 @@ func TestWorkerPanicsWhenConnectionIsNotClose(t *testing.T) {
 		func() {
 			newWorker(dialer)(target, ports, opened)
 		})
+	dialer.AssertExpectations(t)
+	c.AssertExpectations(t)
 }

@@ -23,6 +23,7 @@ func TestProducerGeneratesRange(t *testing.T) {
 			ports := make(chan int, test.to-test.from+1)
 
 			newProducer()(test.from, test.to, ports)
+			close(ports)
 
 			var actual []int
 			for port := range ports {
@@ -48,6 +49,7 @@ func TestProducerPanicsWhenUsingInvalidPorts(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
 			ports := make(chan int)
+			close(ports)
 			assert.PanicsWithValue(t, "invalid ports range, ports can be in range from 1 to 65535",
 				func() {
 					newProducer()(test.from, test.to, ports)
@@ -68,6 +70,7 @@ func TestProducerPanicsWhenUsingInvalidRange(t *testing.T) {
 	for _, test := range tests {
 		t.Run(fmt.Sprintf("produce for %d-%d range", test.from, test.to), func(t *testing.T) {
 			ports := make(chan int)
+			close(ports)
 			assert.PanicsWithValue(t, "'to' must be greater than 'from'",
 				func() {
 					newProducer()(test.from, test.to, ports)
