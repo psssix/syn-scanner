@@ -103,7 +103,7 @@ func TestWorkerPanicsWhenConnectionIsNotClose(t *testing.T) {
 	port := 80
 
 	ports := make(chan int, 1)
-	opened := make(chan int, 1)
+	opened := make(chan int)
 	close(opened)
 
 	ports <- port

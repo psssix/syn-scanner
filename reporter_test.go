@@ -18,10 +18,10 @@ func TestReporterPrints(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(fmt.Sprintf("inform about target %s and ports %v", test.target, test.ports), func(t *testing.T) {
+			opened := make(chan int, len(test.ports))
 			printer := new(mocks.Printer)
 			printer.On("Printf", "scanning: %s opened ports: ", []interface{}{test.target})
 			printer.On("Print", []interface{}{"\ndone\n"})
-			opened := make(chan int, len(test.ports))
 			for at, port := range test.ports {
 				opened <- port
 				if at == 0 {
