@@ -6,7 +6,7 @@ Pet project for GoLang skills promotion.
 
 ## Usage
 ``` shell
-go run . -t <target> 
+go run . -t <target> [-s count]
 ```
 
 ### Parameters
