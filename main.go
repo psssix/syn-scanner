@@ -8,7 +8,7 @@ import (
 )
 
 const defaultThreadCount = 8
-const dialerTimeout = 10
+const dialerTimeout = 3
 
 func main() {
 	target := flag.String("t", "", "target for scanning")
@@ -22,6 +22,6 @@ func main() {
 	newScanner(
 		newProducer(),
 		newWorker(&net.Dialer{Timeout: dialerTimeout * time.Second}),
-		newReporter(PrinterAdapter{}),
+		newReporter(printerAdapter{}),
 	)(*target, *threads)
 }

@@ -2,12 +2,12 @@ package main
 
 import "fmt"
 
-type PrinterAdapter struct{}
+type printerAdapter struct{}
 
-func (p PrinterAdapter) Print(args ...interface{}) {
+func (p printerAdapter) Print(args ...interface{}) {
 	fmt.Print(args...)
 }
 
-func (p PrinterAdapter) Printf(format string, args ...interface{}) {
+func (p printerAdapter) Printf(format string, args ...interface{}) {
 	fmt.Printf(format, args...)
 }
