@@ -31,6 +31,7 @@ func TestScannerIntegrityWork(t *testing.T) {
 		{"test.local", 8},
 		{"127.0.0.1", 16},
 		{"127.0.0.3", 32},
+		{"test2.local", 100000},
 	}
 
 	for _, test := range tests {
