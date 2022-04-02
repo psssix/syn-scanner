@@ -1,4 +1,4 @@
-package main
+package producers
 
 import "fmt"
 
@@ -7,7 +7,7 @@ const (
 	maxPortNumber = 65535
 )
 
-func newProducer() func(from, to int, ports chan<- int) {
+func NewProducer() func(from, to int, ports chan<- int) {
 	return func(from, to int, ports chan<- int) {
 		if from < minPortNumber || from > maxPortNumber || to < minPortNumber || to > maxPortNumber {
 			panic(fmt.Sprintf("invalid ports range, ports can be in range from %d to %d",
