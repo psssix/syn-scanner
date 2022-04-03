@@ -4,6 +4,7 @@ import (
 	"flag"
 	"net"
 	"os"
+	"syn-scanner/pkg/producers"
 	"time"
 )
 
@@ -20,7 +21,7 @@ func main() {
 	}
 
 	newScanner(
-		newProducer(),
+		producers.NewProducer(),
 		newWorker(&net.Dialer{Timeout: dialerTimeout * time.Second}),
 		newReporter(printerAdapter{}),
 	)(*target, *threads)

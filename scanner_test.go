@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
+	"syn-scanner/pkg/producers"
 	"sync"
 	"testing"
 )
@@ -43,8 +44,8 @@ func TestScannerIntegrityWork(t *testing.T) {
 			newScanner(
 				func(from, to int, ports chan<- int) {
 					producerRunCount.add()
-					assert.Equal(t, minPortNumber, from)
-					assert.Equal(t, maxPortNumber, to)
+					assert.Equal(t, producers.minPortNumber, from)
+					assert.Equal(t, producers.maxPortNumber, to)
 					for i := 0; i < test.threads; i++ {
 						ports <- targetPort
 					}
