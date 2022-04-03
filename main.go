@@ -12,8 +12,10 @@ import (
 	"time"
 )
 
-const defaultThreadCount = 8
-const dialerTimeout = 3
+const (
+	defaultThreadCount = 8
+	dialerTimeout      = 3
+)
 
 func main() {
 	target := flag.String("t", "", "target for scanning")
