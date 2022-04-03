@@ -1,8 +1,9 @@
-package main
+package reporters_test
 
 import (
 	"fmt"
 	"syn-scanner/mocks"
+	"syn-scanner/pkg/reporters"
 	"testing"
 )
 
@@ -32,7 +33,7 @@ func TestReporterPrints(t *testing.T) {
 			}
 			close(opened)
 
-			newReporter(printer)(test.target, opened)
+			reporters.NewReporter(printer)(test.target, opened)
 
 			printer.AssertExpectations(t)
 		})
@@ -49,7 +50,7 @@ func TestReporterPrintsWhenNoPortOpen(t *testing.T) {
 	opened := make(chan int)
 	close(opened)
 
-	newReporter(printer)(target, opened)
+	reporters.NewReporter(printer)(target, opened)
 
 	printer.AssertExpectations(t)
 }

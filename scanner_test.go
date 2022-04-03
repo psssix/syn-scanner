@@ -44,8 +44,8 @@ func TestScannerIntegrityWork(t *testing.T) {
 			newScanner(
 				func(from, to int, ports chan<- int) {
 					producerRunCount.add()
-					assert.Equal(t, producers.minPortNumber, from)
-					assert.Equal(t, producers.maxPortNumber, to)
+					assert.Equal(t, producers.MinPortNumber, from)
+					assert.Equal(t, producers.MaxPortNumber, to)
 					for i := 0; i < test.threads; i++ {
 						ports <- targetPort
 					}

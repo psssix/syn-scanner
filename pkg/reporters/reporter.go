@@ -1,4 +1,4 @@
-package main
+package reporters
 
 type printer interface {
 	// Print appends args to the message output.
@@ -8,7 +8,7 @@ type printer interface {
 	Printf(format string, args ...interface{})
 }
 
-func newReporter(p printer) func(target string, opened <-chan int) {
+func NewReporter(p printer) func(target string, opened <-chan int) {
 	return func(target string, opened <-chan int) {
 		p.Printf("scanning: %s opened ports: ", target)
 		firstPrint := true

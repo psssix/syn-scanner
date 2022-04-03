@@ -3,15 +3,15 @@ package producers
 import "fmt"
 
 const (
-	minPortNumber = 1
-	maxPortNumber = 65535
+	MinPortNumber = 1
+	MaxPortNumber = 65535
 )
 
 func NewProducer() func(from, to int, ports chan<- int) {
 	return func(from, to int, ports chan<- int) {
-		if from < minPortNumber || from > maxPortNumber || to < minPortNumber || to > maxPortNumber {
+		if from < MinPortNumber || from > MaxPortNumber || to < MinPortNumber || to > MaxPortNumber {
 			panic(fmt.Sprintf("invalid ports range, ports can be in range from %d to %d",
-				minPortNumber, maxPortNumber))
+				MinPortNumber, MaxPortNumber))
 		}
 		if from > to {
 			panic("'to' must be greater than 'from'")

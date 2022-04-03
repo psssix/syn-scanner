@@ -21,7 +21,7 @@ func newScanner(
 				close(ports)
 				waitScanner.Done()
 			}()
-			producer(producers.minPortNumber, producers.maxPortNumber, ports)
+			producer(producers.MinPortNumber, producers.MaxPortNumber, ports)
 		}()
 
 		waitScanner.Add(1)
