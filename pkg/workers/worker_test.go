@@ -1,10 +1,11 @@
-package main
+package workers_test
 
 import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"net"
 	"syn-scanner/mocks"
+	"syn-scanner/pkg/workers"
 	"testing"
 )
 
@@ -35,7 +36,7 @@ func TestWorkerDials(t *testing.T) {
 			}
 			close(ports)
 
-			newWorker(dialer)(test.target, ports, opened)
+			workers.NewWorker(dialer)(test.target, ports, opened)
 			close(opened)
 
 			var actualOpened []int
@@ -84,7 +85,7 @@ func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 	}
 	close(ports)
 
-	newWorker(dialer)(target, ports, opened)
+	workers.NewWorker(dialer)(target, ports, opened)
 	close(opened)
 
 	var actualOpened []int
@@ -118,7 +119,7 @@ func TestWorkerPanicsWhenConnectionIsNotClose(t *testing.T) {
 
 	assert.PanicsWithValue(t, "can't close opened connection for test.local:80",
 		func() {
-			newWorker(dialer)(target, ports, opened)
+			workers.NewWorker(dialer)(target, ports, opened)
 		})
 	dialer.AssertExpectations(t)
 	c.AssertExpectations(t)
