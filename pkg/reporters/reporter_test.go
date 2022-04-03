@@ -2,7 +2,7 @@ package reporters_test
 
 import (
 	"fmt"
-	"syn-scanner/mocks"
+	"syn-scanner/pkg/mocks"
 	"syn-scanner/pkg/reporters"
 	"testing"
 )

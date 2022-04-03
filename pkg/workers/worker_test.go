@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"net"
-	"syn-scanner/mocks"
+	"syn-scanner/pkg/mocks"
 	"syn-scanner/pkg/workers"
 	"testing"
 )
