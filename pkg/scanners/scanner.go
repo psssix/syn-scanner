@@ -1,11 +1,11 @@
-package main
+package scanners
 
 import (
 	"syn-scanner/pkg/producers"
 	"sync"
 )
 
-func newScanner(
+func NewScanner(
 	producer func(from, to int, ports chan<- int),
 	worker func(target string, ports <-chan int, opened chan<- int),
 	reporter func(target string, opened <-chan int),
