@@ -1,8 +1,11 @@
-package main
+package scanners
 
-import "sync"
+import (
+	"syn-scanner/pkg/producers"
+	"sync"
+)
 
-func newScanner(
+func NewScanner(
 	producer func(from, to int, ports chan<- int),
 	worker func(target string, ports <-chan int, opened chan<- int),
 	reporter func(target string, opened <-chan int),
@@ -18,7 +21,7 @@ func newScanner(
 				close(ports)
 				waitScanner.Done()
 			}()
-			producer(minPortNumber, maxPortNumber, ports)
+			producer(producers.MinPortNumber, producers.MaxPortNumber, ports)
 		}()
 
 		waitScanner.Add(1)

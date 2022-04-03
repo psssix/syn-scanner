@@ -1,4 +1,4 @@
-package main
+package workers
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ type dialer interface {
 	Dial(network, address string) (net.Conn, error)
 }
 
-func newWorker(d dialer) func(target string, ports <-chan int, opened chan<- int) {
+func NewWorker(d dialer) func(target string, ports <-chan int, opened chan<- int) {
 	return func(target string, ports <-chan int, opened chan<- int) {
 		for port := range ports {
 			address := fmt.Sprintf("%s:%d", target, port)
