@@ -1,4 +1,4 @@
-module syn-scanner
+module github.com/psssix/syn-scanner
 
 go 1.18
 

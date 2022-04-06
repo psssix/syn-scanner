@@ -1,12 +1,5 @@
 # Comments started with [!] are explanations of my workflow with gitlabci-lint.
-# Another comments are real comments in my config. 
-
-# [!] Examine the https://golangci-lint.run/usage/configuration/ to know all possibilities.
-run:
-  timeout: 5m
-  modules-download-mode: vendor # [!] if you are using vendoring
-  build-tags:
-    - integration # [!] If you disable code for integration tests to run all unit tests, enable it to lint all the same. 
+# Another comments are real comments in my config.
   
 # [!] Linters are enabled manually. Disabled linters are commented and have comment about reason of disabling.
 # [!] Linters disabled inside source code by //nolint should be specific and comments like this
@@ -123,9 +116,12 @@ linters:
 # [!] Linters has a lot of settings and can be flexible configured.
 linters-settings:
   lll:
-    line-length: 110
+    line-length: 120
   gci:
-    local-prefixes: <your go module>
+    sections:
+      - standard
+      - default
+      - prefix(github.com/psssix/syn-scanner)
   forbidigo: # [!] Useful to check some code writing rules. E.g. this config contains example of using own logger instead of gloabl zap.
     forbid:
       - zap # we use our own logger that wraps zap.
@@ -200,3 +196,11 @@ issues:
       linters:
         - unparam
       text: "newConfig - result 1 \\(error\\) is always nil"
+
+# [!] Examine the https://golangci-lint.run/usage/configuration/ to know all possibilities.
+run:
+  go: '1.17'
+  timeout: 5m
+  modules-download-mode: mod # [!] if you are using vendoring or mod
+  build-tags:
+    - integration # [!] If you disable code for integration tests to run all unit tests, enable it to lint all the same.
