@@ -9,6 +9,8 @@ import (
 )
 
 func TestReporterPrints(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		target string
 		ports  []int
@@ -19,7 +21,10 @@ func TestReporterPrints(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(fmt.Sprintf("inform about target %s and ports %v", test.target, test.ports), func(t *testing.T) {
+			t.Parallel()
+
 			opened := make(chan int, len(test.ports))
 			printer := new(mocks.Printer)
 			printer.On("Printf", "scanning: %s opened ports: ", []interface{}{test.target})
@@ -42,6 +47,8 @@ func TestReporterPrints(t *testing.T) {
 }
 
 func TestReporterPrintsWhenNoPortOpen(t *testing.T) {
+	t.Parallel()
+
 	const target = "test.local"
 
 	printer := new(mocks.Printer)

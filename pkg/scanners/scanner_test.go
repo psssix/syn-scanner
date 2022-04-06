@@ -27,6 +27,8 @@ func (pc *processCounter) value() int {
 }
 
 func TestScannerIntegrityWork(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		target  string
 		threads int
@@ -38,7 +40,10 @@ func TestScannerIntegrityWork(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(fmt.Sprintf("scan %s with %d threads", test.target, test.threads), func(t *testing.T) {
+			t.Parallel()
+
 			producerRunCount, workerRunCount, reporterRunCount := processCounter{}, processCounter{}, processCounter{}
 			targetPort := rand.Int()
 			openedPort := rand.Int()

@@ -11,6 +11,8 @@ import (
 )
 
 func TestWorkerDials(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		target string
 		ports  []int
@@ -21,7 +23,10 @@ func TestWorkerDials(t *testing.T) {
 	}
 
 	for _, test := range tests {
+		test := test
 		t.Run(fmt.Sprintf("work with target %s and ports %v", test.target, test.ports), func(t *testing.T) {
+			t.Parallel()
+
 			ports := make(chan int, len(test.ports))
 			opened := make(chan int, len(test.ports))
 			dialer := new(mocks.Dialer)
@@ -54,6 +59,8 @@ func TestWorkerDials(t *testing.T) {
 }
 
 func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
+	t.Parallel()
+
 	const target = "test.local"
 	targetPorts := []struct {
 		number     int
@@ -101,6 +108,8 @@ func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 }
 
 func TestWorkerPanicsWhenConnectionIsNotClose(t *testing.T) {
+	t.Parallel()
+
 	const target = "test.local"
 	const port = 80
 
