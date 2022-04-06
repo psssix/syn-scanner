@@ -2,8 +2,8 @@ package producers_test
 
 import (
 	"fmt"
+	"github.com/psssix/syn-scanner/pkg/producers"
 	"github.com/stretchr/testify/assert"
-	"syn-scanner/pkg/producers"
 	"testing"
 )
 

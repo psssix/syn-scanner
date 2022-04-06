@@ -2,8 +2,8 @@ package reporters_test
 
 import (
 	"fmt"
-	"syn-scanner/pkg/mocks"
-	"syn-scanner/pkg/reporters"
+	"github.com/psssix/syn-scanner/pkg/mocks"
+	"github.com/psssix/syn-scanner/pkg/reporters"
 	"testing"
 )
 

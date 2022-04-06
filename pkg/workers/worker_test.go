@@ -2,11 +2,12 @@ package workers_test
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"net"
-	"syn-scanner/pkg/mocks"
-	"syn-scanner/pkg/workers"
 	"testing"
+
+	"github.com/psssix/syn-scanner/pkg/mocks"
+	"github.com/psssix/syn-scanner/pkg/workers"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestWorkerDials(t *testing.T) {

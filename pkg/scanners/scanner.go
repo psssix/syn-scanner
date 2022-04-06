@@ -1,7 +1,7 @@
 package scanners
 
 import (
-	"syn-scanner/pkg/producers"
+	"github.com/psssix/syn-scanner/pkg/producers"
 	"sync"
 )
 

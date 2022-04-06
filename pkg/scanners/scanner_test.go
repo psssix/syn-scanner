@@ -2,10 +2,10 @@ package scanners_test
 
 import (
 	"fmt"
+	"github.com/psssix/syn-scanner/pkg/producers"
+	"github.com/psssix/syn-scanner/pkg/scanners"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
-	"syn-scanner/pkg/producers"
-	"syn-scanner/pkg/scanners"
 	"sync"
 	"testing"
 )

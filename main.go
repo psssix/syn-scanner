@@ -2,13 +2,13 @@ package main
 
 import (
 	"flag"
+	"github.com/psssix/syn-scanner/internal/adapters"
+	"github.com/psssix/syn-scanner/pkg/producers"
+	"github.com/psssix/syn-scanner/pkg/reporters"
+	"github.com/psssix/syn-scanner/pkg/scanners"
+	"github.com/psssix/syn-scanner/pkg/workers"
 	"net"
 	"os"
-	"syn-scanner/internal/adapters"
-	"syn-scanner/pkg/producers"
-	"syn-scanner/pkg/reporters"
-	"syn-scanner/pkg/scanners"
-	"syn-scanner/pkg/workers"
 	"time"
 )
 
