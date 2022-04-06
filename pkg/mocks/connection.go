@@ -1,20 +1,21 @@
 package mocks
 
 import (
-	"github.com/stretchr/testify/mock"
 	"net"
 	"time"
+
+	"github.com/stretchr/testify/mock"
 )
 
 type Connection struct {
 	mock.Mock
 }
 
-func (c *Connection) Read(b []byte) (n int, err error) {
+func (c *Connection) Read([]byte) (int, error) {
 	panic("implement me")
 }
 
-func (c *Connection) Write(b []byte) (n int, err error) {
+func (c *Connection) Write([]byte) (int, error) {
 	panic("implement me")
 }
 
@@ -31,14 +32,14 @@ func (c *Connection) RemoteAddr() net.Addr {
 	panic("implement me")
 }
 
-func (c *Connection) SetDeadline(t time.Time) error {
+func (c *Connection) SetDeadline(time.Time) error {
 	panic("implement me")
 }
 
-func (c *Connection) SetReadDeadline(t time.Time) error {
+func (c *Connection) SetReadDeadline(time.Time) error {
 	panic("implement me")
 }
 
-func (c *Connection) SetWriteDeadline(t time.Time) error {
+func (c *Connection) SetWriteDeadline(time.Time) error {
 	panic("implement me")
 }
