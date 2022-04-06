@@ -72,7 +72,7 @@ linters:
     - importas
     # - ireturn # See: https://github.com/go-proverbs/go-proverbs.github.io/issues/37.
     - ineffassign
-    # - interfacer # Is prone to bad suggestions (officialy deprecated).
+    # - interfacer # Is prone to bad suggestions (officially deprecated).
     - lll
     # - maligned # Replaced by `govet`'s `fieldalignment`
     - makezero
@@ -122,7 +122,7 @@ linters-settings:
       - standard
       - default
       - prefix(github.com/psssix/syn-scanner)
-  forbidigo: # [!] Useful to check some code writing rules. E.g. this config contains example of using own logger instead of gloabl zap.
+  forbidigo: # [!] Useful to check some code writing rules. E.g. this config contains example of using own logger instead of global zap.
     forbid:
       - zap # we use our own logger that wraps zap.
       - os.Exit # it's not safe to exit in random places, because defer will not work.
@@ -134,7 +134,7 @@ linters-settings:
       - func
       - iface
   nolintlint:
-    require-explanation: true # [!] it forces you to write explantion of //nolint comments.
+    require-explanation: true # [!] it forces you to write explanation of //nolint comments.
     require-specific: true
   tagliatelle: # [!] configure it accordingly to your project rules.
     case:
@@ -168,13 +168,13 @@ issues:
       path: service\.go
       source: "Init|New"
 
-    # We allow to use zap only in log package.
+    # We allow using zap only in log package.
     - path: internal/log
       linters:
         - forbidigo
       text: "use of .* forbidden by pattern `zap`"
 
-    # We allow to log.Fatal in main, tests, scripts and generators.
+    # We allow logging.Fatal in main, tests, scripts and generators.
     - path: main.go|main_test.go|tests|scripts|internal/blueprint/generator/generator.go|build/dockergen.go
       linters:
         - forbidigo
