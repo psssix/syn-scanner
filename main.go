@@ -2,14 +2,15 @@ package main
 
 import (
 	"flag"
+	"net"
+	"os"
+	"time"
+
 	"github.com/psssix/syn-scanner/internal/adapters"
 	"github.com/psssix/syn-scanner/pkg/producers"
 	"github.com/psssix/syn-scanner/pkg/reporters"
 	"github.com/psssix/syn-scanner/pkg/scanners"
 	"github.com/psssix/syn-scanner/pkg/workers"
-	"net"
-	"os"
-	"time"
 )
 
 const (

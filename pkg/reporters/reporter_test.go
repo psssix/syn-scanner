@@ -2,9 +2,10 @@ package reporters_test
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/psssix/syn-scanner/pkg/mocks"
 	"github.com/psssix/syn-scanner/pkg/reporters"
-	"testing"
 )
 
 func TestReporterPrints(t *testing.T) {

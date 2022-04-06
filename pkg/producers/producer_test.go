@@ -2,9 +2,10 @@ package producers_test
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/psssix/syn-scanner/pkg/producers"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestProducerGeneratesRange(t *testing.T) {
