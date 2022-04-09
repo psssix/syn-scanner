@@ -30,18 +30,20 @@ func TestScannerIntegrityWork(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name    string
 		target  string
 		threads int
 	}{
-		{"test.local", 8},
-		{"127.0.0.1", 16},
-		{"127.0.0.3", 32},
-		{"test2.local", 100000},
+		{"", "test.local", 8},
+		{"", "127.0.0.1", 16},
+		{"", "127.0.0.3", 32},
+		{"", "test2.local", 100000},
 	}
 
 	for _, test := range tests {
 		test := test
-		t.Run(fmt.Sprintf("scan %s with %d threads", test.target, test.threads), func(t *testing.T) {
+		test.name = fmt.Sprintf("scan %s with %d threads", test.target, test.threads)
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			producerRunCount, workerRunCount, reporterRunCount := processCounter{}, processCounter{}, processCounter{}

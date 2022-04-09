@@ -12,19 +12,21 @@ func TestProducerGeneratesRange(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name     string
 		from     int
 		to       int
 		expected []int
 	}{
-		{1, 1, []int{1}},
-		{1, 2, []int{1, 2}},
-		{1, 10, []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}},
-		{65526, 65535, []int{65526, 65527, 65528, 65529, 65530, 65531, 65532, 65533, 65534, 65535}},
+		{"", 1, 1, []int{1}},
+		{"", 1, 2, []int{1, 2}},
+		{"", 1, 10, []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}},
+		{"", 65526, 65535, []int{65526, 65527, 65528, 65529, 65530, 65531, 65532, 65533, 65534, 65535}},
 	}
 
 	for _, test := range tests {
 		test := test
-		t.Run(fmt.Sprintf("produce for %d-%d range", test.from, test.to), func(t *testing.T) {
+		test.name = fmt.Sprintf("produce for %d-%d range", test.from, test.to)
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			ports := make(chan int, test.to-test.from+1)
@@ -74,16 +76,18 @@ func TestProducerPanicsWhenUsingInvalidRange(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
+		name string
 		from int
 		to   int
 	}{
-		{10, 1},
-		{65535, 65526},
+		{"", 10, 1},
+		{"", 65535, 65526},
 	}
 
 	for _, test := range tests {
 		test := test
-		t.Run(fmt.Sprintf("produce for %d-%d range", test.from, test.to), func(t *testing.T) {
+		test.name = fmt.Sprintf("produce for %d-%d range", test.from, test.to)
+		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 
 			ports := make(chan int)
