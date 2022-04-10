@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/psssix/syn-scanner/pkg/producers"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/psssix/syn-scanner/pkg/producers"
 )
 
 func TestProducerGeneratesRange(t *testing.T) {

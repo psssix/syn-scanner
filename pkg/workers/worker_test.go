@@ -5,9 +5,10 @@ import (
 	"net"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/psssix/syn-scanner/pkg/mocks"
 	"github.com/psssix/syn-scanner/pkg/workers"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestWorkerDials(t *testing.T) {

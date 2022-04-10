@@ -6,9 +6,10 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/psssix/syn-scanner/pkg/producers"
 	"github.com/psssix/syn-scanner/pkg/scanners"
-	"github.com/stretchr/testify/assert"
 )
 
 type processCounter struct {
