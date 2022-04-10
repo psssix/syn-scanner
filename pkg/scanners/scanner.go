@@ -1,8 +1,9 @@
 package scanners
 
 import (
-	"syn-scanner/pkg/producers"
 	"sync"
+
+	"github.com/psssix/syn-scanner/pkg/producers"
 )
 
 func NewScanner(

@@ -1,8 +1,10 @@
 package mocks
 
 import (
-	"github.com/stretchr/testify/mock"
+	"fmt"
 	"net"
+
+	"github.com/stretchr/testify/mock"
 )
 
 type Dialer struct {
@@ -15,5 +17,9 @@ func (d *Dialer) Dial(network, address string) (net.Conn, error) {
 	if c == nil {
 		return nil, args.Error(1)
 	}
-	return c.(net.Conn), nil
+	conn, ok := c.(net.Conn)
+	if !ok {
+		panic(fmt.Sprintf("interface conversion: interface {} is %T, not net.Conn", c))
+	}
+	return conn, nil
 }

@@ -2,25 +2,34 @@ package workers_test
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"net"
-	"syn-scanner/pkg/mocks"
-	"syn-scanner/pkg/workers"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/psssix/syn-scanner/pkg/mocks"
+	"github.com/psssix/syn-scanner/pkg/workers"
 )
 
 func TestWorkerDials(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
+		name   string
 		target string
 		ports  []int
 	}{
-		{"test.local", []int{10}},
-		{"127.0.0.1", []int{20, 30}},
-		{"test2.local", []int{30, 31, 32, 33}},
+		{"", "test.local", []int{10}},
+		{"", "127.0.0.1", []int{20, 30}},
+		{"", "test2.local", []int{30, 31, 32, 33}},
 	}
 
 	for _, test := range tests {
-		t.Run(fmt.Sprintf("work with target %s and ports %v", test.target, test.ports), func(t *testing.T) {
+		test := test
+		test.name = fmt.Sprintf("work with target %s and ports %v", test.target, test.ports)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
 			ports := make(chan int, len(test.ports))
 			opened := make(chan int, len(test.ports))
 			dialer := new(mocks.Dialer)
@@ -39,7 +48,7 @@ func TestWorkerDials(t *testing.T) {
 			workers.NewWorker(dialer)(test.target, ports, opened)
 			close(opened)
 
-			var actualOpened []int
+			actualOpened := make([]int, 0)
 			for port := range opened {
 				actualOpened = append(actualOpened, port)
 			}
@@ -53,6 +62,8 @@ func TestWorkerDials(t *testing.T) {
 }
 
 func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
+	t.Parallel()
+
 	const target = "test.local"
 	targetPorts := []struct {
 		number     int
@@ -88,7 +99,7 @@ func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 	workers.NewWorker(dialer)(target, ports, opened)
 	close(opened)
 
-	var actualOpened []int
+	actualOpened := make([]int, 0)
 	for port := range opened {
 		actualOpened = append(actualOpened, port)
 	}
@@ -100,6 +111,8 @@ func TestWorkerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 }
 
 func TestWorkerPanicsWhenConnectionIsNotClose(t *testing.T) {
+	t.Parallel()
+
 	const target = "test.local"
 	const port = 80
 

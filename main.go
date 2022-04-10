@@ -4,16 +4,19 @@ import (
 	"flag"
 	"net"
 	"os"
-	"syn-scanner/internal/adapters"
-	"syn-scanner/pkg/producers"
-	"syn-scanner/pkg/reporters"
-	"syn-scanner/pkg/scanners"
-	"syn-scanner/pkg/workers"
 	"time"
+
+	"github.com/psssix/syn-scanner/internal/adapters"
+	"github.com/psssix/syn-scanner/pkg/producers"
+	"github.com/psssix/syn-scanner/pkg/reporters"
+	"github.com/psssix/syn-scanner/pkg/scanners"
+	"github.com/psssix/syn-scanner/pkg/workers"
 )
 
-const defaultThreadCount = 8
-const dialerTimeout = 3
+const (
+	defaultThreadCount = 8
+	dialerTimeout      = 3
+)
 
 func main() {
 	target := flag.String("t", "", "target for scanning")

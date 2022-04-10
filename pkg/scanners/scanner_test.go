@@ -2,12 +2,14 @@ package scanners_test
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"math/rand"
-	"syn-scanner/pkg/producers"
-	"syn-scanner/pkg/scanners"
 	"sync"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/psssix/syn-scanner/pkg/producers"
+	"github.com/psssix/syn-scanner/pkg/scanners"
 )
 
 type processCounter struct {
@@ -26,18 +28,25 @@ func (pc *processCounter) value() int {
 }
 
 func TestScannerIntegrityWork(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
+		name    string
 		target  string
 		threads int
 	}{
-		{"test.local", 8},
-		{"127.0.0.1", 16},
-		{"127.0.0.3", 32},
-		{"test2.local", 100000},
+		{"", "test.local", 8},
+		{"", "127.0.0.1", 16},
+		{"", "127.0.0.3", 32},
+		{"", "test2.local", 100000},
 	}
 
 	for _, test := range tests {
-		t.Run(fmt.Sprintf("scan %s with %d threads", test.target, test.threads), func(t *testing.T) {
+		test := test
+		test.name = fmt.Sprintf("scan %s with %d threads", test.target, test.threads)
+		t.Run(test.name, func(t *testing.T) {
+			t.Parallel()
+
 			producerRunCount, workerRunCount, reporterRunCount := processCounter{}, processCounter{}, processCounter{}
 			targetPort := rand.Int()
 			openedPort := rand.Int()
