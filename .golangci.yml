@@ -90,7 +90,6 @@ linters:
     - promlinter
     - revive
     - rowserrcheck
-    # - scopelint # Replaced by `exportloopref`.
     - sqlclosecheck
     - staticcheck
     - structcheck
