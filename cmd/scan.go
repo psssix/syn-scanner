@@ -3,8 +3,8 @@ package cmd
 import "github.com/spf13/cobra"
 
 var scanCmd = &cobra.Command{
-	Use:   "scan",
-	Short: "Scan <scanner> <target>.",
+	Use:   "scan <scanner> <target>",
+	Short: "Scan <target> with <scanner>.",
 }
 
 func init() {
