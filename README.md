@@ -6,13 +6,17 @@ Pet project for GoLang skills promotion.
 
 ## Usage
 ``` shell
-go run . -t <target> [-s count]
+go run . scan syn <target> [-t count]
 ```
 
-### Parameters
+### Arguments
 ```
-  -s int
-        number of threads(streams) when scanning (default 8)
-  -t string
+  <target> string
         target for scanning
+```
+
+### Flags
+```
+  -t int
+        number of threads(streams) when scanning (default 64)
 ```

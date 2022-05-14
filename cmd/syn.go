@@ -13,7 +13,7 @@ import (
 )
 
 var synScanCmd = &cobra.Command{
-	Use:   "syn",
+	Use:   "syn <target>",
 	Short: "Scan <target> using syn/ack-scanner",
 	RunE:  scan,
 }
