@@ -2,6 +2,7 @@ package scanners_test
 
 import (
 	"fmt"
+	"github.com/psssix/syn-scanner/internal/scanners"
 	"math/rand"
 	"sync"
 	"testing"
@@ -9,7 +10,6 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/psssix/syn-scanner/pkg/producers"
-	"github.com/psssix/syn-scanner/pkg/scanners"
 )
 
 type processCounter struct {

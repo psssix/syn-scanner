@@ -3,9 +3,9 @@ package cmd
 import (
 	"errors"
 	"github.com/psssix/syn-scanner/internal/adapters"
+	"github.com/psssix/syn-scanner/internal/scanners"
 	"github.com/psssix/syn-scanner/pkg/producers"
 	"github.com/psssix/syn-scanner/pkg/reporters"
-	"github.com/psssix/syn-scanner/pkg/scanners"
 	"github.com/psssix/syn-scanner/pkg/workers"
 	"github.com/spf13/cobra"
 	"net"
