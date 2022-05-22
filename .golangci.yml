@@ -90,7 +90,6 @@ linters:
     - promlinter
     - revive
     - rowserrcheck
-    # - scopelint # Replaced by `exportloopref`.
     - sqlclosecheck
     - staticcheck
     - structcheck
@@ -199,7 +198,7 @@ issues:
 
 # [!] Examine the https://golangci-lint.run/usage/configuration/ to know all possibilities.
 run:
-  go: '1.17'
+  go: '1.18'
   timeout: 5m
   modules-download-mode: mod # [!] if you are using vendoring or mod
   build-tags:
