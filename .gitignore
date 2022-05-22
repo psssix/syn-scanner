@@ -20,3 +20,6 @@
 
 # GoLand project files
 /.idea
+
+# OS service file
+*.DS_Store

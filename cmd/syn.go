@@ -34,7 +34,7 @@ var synScanCmd = &cobra.Command{
 
 func init() {
 	scanCmd.AddCommand(synScanCmd)
-	synScanCmd.Flags().IntP("threads", "t", defaultThreadCount, "Number of scan threads")
+	synScanCmd.Flags().IntP("threads", "t", defaultThreadCount, "number of scan threads")
 }
 
 func scan(cmd *cobra.Command, args []string) error {

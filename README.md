@@ -2,14 +2,17 @@
 Simple SYN/ACK scanner on go.
 Pet project for GoLang skills promotion.
 
-![icon.svg](assets/icon.png)
+![icon.png](assets/icon-resized.png)
 
 ## Usage
 ``` shell
-go run . scan syn <target> [-t count]
+go run . scan syn <target> [--threads number of threads]
 ```
 
-### Arguments
+### Scanners
+- **syn** - SYN/ACK scanner
+
+### Arguments SYN/ACK scanner
 ```
   <target> string
         target for scanning
@@ -17,6 +20,6 @@ go run . scan syn <target> [-t count]
 
 ### Flags
 ```
-  -t int
-        number of threads(streams) when scanning (default 64)
+  --threads int
+        number of scan threads (default 64)
 ```
