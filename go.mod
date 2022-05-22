@@ -3,6 +3,7 @@ module github.com/psssix/syn-scanner
 go 1.18
 
 require (
+	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.4.0
 	github.com/stretchr/testify v1.7.1
 )

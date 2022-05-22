@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 	"github.com/psssix/syn-scanner/internal/adapters"
 	"github.com/psssix/syn-scanner/internal/scanners"
 	"github.com/psssix/syn-scanner/pkg/producers"
@@ -12,17 +12,6 @@ import (
 	"time"
 )
 
-var synScanCmd = &cobra.Command{
-	Use:   "syn <target>",
-	Short: "Scan <target> using syn/ack-scanner",
-	RunE:  scan,
-}
-
-func init() {
-	scanCmd.AddCommand(synScanCmd)
-
-}
-
 var ErrEmptyTarget = errors.New("target is not specified for scanner")
 
 const (
@@ -30,20 +19,30 @@ const (
 	dialerTimeout      = 15
 )
 
+var synScanCmd = &cobra.Command{
+	Use:   "syn <target>",
+	Short: "Scan <target> using syn/ack-scanner",
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) < 1 || len(args[0]) == 0 {
+			return ErrEmptyTarget
+		} else {
+			return nil
+		}
+	},
+	RunE: scan,
+}
+
+func init() {
+	scanCmd.AddCommand(synScanCmd)
+	synScanCmd.Flags().IntP("threads", "t", defaultThreadCount, "Number of scan threads")
+}
+
 func scan(cmd *cobra.Command, args []string) error {
-	var target string
-
-	//target = flag.String("t", "", "target for scanning")
-	switch len(args) {
-	case 0:
-		return ErrEmptyTarget
-	case 1:
-	default:
-		target = args[0]
+	target := args[0]
+	threads, err := cmd.Flags().GetInt("threads")
+	if err != nil {
+		return errors.Wrap(err, "error while parsing threads flag")
 	}
-
-	threads := defaultThreadCount
-	//threads := flag.Int("s", defaultThreadCount, "number of threads(streams) when scanning")
 
 	scanners.NewScanner(
 		producers.NewProducer(),
