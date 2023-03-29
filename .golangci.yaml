@@ -1,0 +1,287 @@
+# Comments started with [!] are explanations of my workflow with gitlabci-lint.
+# Another comments are real comments in my config.
+
+# [!] Examine the https://golangci-lint.run/usage/configuration/ to know all possibilities.
+run:
+  go: '1.20'
+  # Timeout for analysis, e.g. 30s, 5m.
+  # Default: 1m
+  timeout: 5m
+  modules-download-mode: mod  # [!] if you are using vendoring or mod
+  build-tags:
+    - unit        # [!] If you disable code for unit tests to run all integration tests, enable it to lint all the same.
+    - integration # [!] If you disable code for integration tests to run all unit tests, enable it to lint all the same.
+
+  # Which dirs to skip: issues from them won't be reported.
+  # Can use regexp here: `generated.*`, regexp is applied on full path.
+  # Default value is empty list,
+  # but default dirs are skipped independently of this option's value (see skip-dirs-use-default).
+  # "/" will be replaced by current OS file path separator to properly work on Windows.
+  skip-dirs:
+    - proto
+
+severity:
+  # Set the default severity for issues.
+  #
+  # If severity rules are defined and the issues do not match or no severity is provided to the rule
+  # this will be the default severity applied.
+  # Severities should match the supported severity names of the selected out format.
+  # - Code climate: https://docs.codeclimate.com/docs/issues#issue-severity
+  # - Checkstyle: https://checkstyle.sourceforge.io/property_types.html#severity
+  # - GitHub: https://help.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-error-message
+  #
+  # Default value is an empty string.
+  default-severity: major
+  # When a list of severity rules are provided, severity information will be added to lint issues.
+  # Severity rules have the same filtering capability as exclude rules
+  # except you are allowed to specify one matcher per severity rule.
+  # Only affects out formats that support setting severity information.
+  #
+  # Default: []
+  rules:
+    - linters:
+        - dupl
+      severity: info
+
+# [!] Linters are enabled manually. Disabled linters are commented and have comment about reason of disabling.
+# [!] Linters disabled inside source code by //nolint should be specific and commented like this
+# [!] //nolint:gocyclo // This legacy function is complex but the team too busy to simplify it.
+# [!] (see also nolintlint settings).
+#
+# [!] During update version of golangci-lint do the following:
+# [!] - add new linters to enable-list
+# [!] - enable previously disabled linters if needed
+# [!] - configure (see below) or disable new linters to be appropriate for your project
+linters:
+  disable-all: true
+  enable:
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - containedctx
+    - contextcheck
+#    - cyclop
+      # Measuring code complexity is hard. Cyclomatic complexity is doubtfully a reliable metric for this purpose.
+      # Some problems are complex by nature and therefore more cyclomatically complex code might actually be simpler.
+#    - deadcode # Deprecated since v1.49.0. Replaced by `unused`.
+#    - decorder # Too subjective, but we can try it, after start using golangci-lint.
+    - depguard
+    - dogsled
+    - dupl
+    - durationcheck
+    - errcheck
+    - errchkjson
+    - errname
+    - errorlint
+#    - execinquery # golangci-lint does not know this linter, although it is present in the documentation.
+    - exhaustive
+#    - exhaustivestruct # Deprecated since v1.46.0. Replaced by `exhaustruct'.
+#    - exhaustruct # We don't need reminders about half-filled or not-filled structures, project has plenty of them, and it's okay
+    - exportloopref
+    - forbidigo
+    - forcetypeassert
+    - funlen
+#    - gci # Decided to switch it off and use gofmt hints in AL-22 [https://jira.innercorp.net/browse/AL-22]
+    - gochecknoglobals
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - godox
+    - goerr113
+    - gofmt
+    - gofumpt
+#    - goheader # We do not use the description of license agreements in the project.
+    - goimports
+#    - golint # Deprecated since v1.41.0. Replaced by `revive`.
+    - gomnd
+    - gomoddirectives
+    - gomodguard
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - grouper
+    - ifshort
+    - importas
+    - ineffassign
+#    - interfacer # Deprecated
+#    - ireturn # Does not fit our practices, blocks dependency inversion
+    - lll
+    - maintidx # Too subjective, but I want try it on code.
+    - makezero
+#    - maligned # Deprecated since v1.38.0. Replaced by `govet(fieldalignment)'.
+    - misspell
+    - nakedret
+    - nestif
+    - nilerr
+    - nilnil # Zero-value of maps, slices and channels is `nil` but useful.
+#    - nlreturn # Too subjective.
+    - noctx
+    - nolintlint
+    - paralleltest
+    - prealloc
+    - predeclared
+    - promlinter
+    - revive
+    - rowserrcheck
+#    - scopelint # Deprecated since v1.39.0. Replaced by `exportloopref`.
+    - sqlclosecheck
+    - staticcheck
+    - structcheck
+    - stylecheck
+    - tagliatelle
+    - tenv
+#    - testpackage # We are use testing inside the package
+    - thelper
+    - tparallel
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - varnamelen
+#    - varcheck # Deprecated since v1.49.0. Replaced by `unused`.
+    - wastedassign
+    - whitespace
+#    - wrapcheck # Too subjective.
+    - wsl # Too aggressive. Might be useful if it could do auto fix.
+
+# [!] Linters has a lot of settings and can be flexible configured.
+linters-settings:
+  forbidigo: # [!] Useful to check some code writing rules. E.g. this config contains example of using own logger instead of global zap.
+    forbid:
+      - ^print.*$
+      - fmt\.Print.*(# do not commit print statements)?
+      - fmt\.Errorf(# please use github\.com/pkg/errors)?
+      - ^log\w*\.(For|Debug|Info|Warn|Error|Fatal){1}(# do not use basic log, use logger taken from Service as dependency)?
+      - zap # we use our own logger that wraps zap.
+      - os.Exit # it's not safe to exit in random places, because defer will not work.
+  lll:
+    line-length: 120
+  nolintlint:
+    require-explanation: true # [!] it forces you to write explanation of //nolint comments.
+    require-specific: true
+  tagliatelle: # [!] configure it accordingly to your project rules.
+    case:
+      use-field-name: false
+      rules:
+        json: snake
+        yaml: snake
+  varnamelen:
+    # The longest distance, in source lines, that is being considered a "small scope." (defaults to 5)
+    # Variables used in at most this many lines will be ignored.
+    max-distance: 5
+    # The minimum length of a variable's name that is considered "long." (defaults to 3)
+    # Variable names that are at least this long will be ignored.
+    min-name-length: 3
+    # Ignore "ok" variables that hold the bool return value of a type assertion. (defaults to false)
+    ignore-type-assert-ok: true
+    # Ignore "ok" variables that hold the bool return value of a map index. (defaults to false)
+    ignore-map-index-ok: true
+    # Ignore "ok" variables that hold the bool return value of a channel receive. (defaults to false)
+    ignore-chan-recv-ok: true
+    # Optional list of variable names that should be ignored completely. (defaults to empty list)
+    ignore-names:
+      - db
+      - err
+      - id
+      - wg
+    # Optional list of variable declarations that should be ignored completely. (defaults to empty list)
+    # Entries must be in one of the following forms (see below for examples):
+    # - for variables, parameters, named return values, method receivers, or type parameters:
+    #   <name> <type>  (<type> can also be a pointer/slice/map/chan/...)
+    # - for constants: const <name>
+    ignore-decls:
+      - t testing.T
+      - T any
+
+# [!] Extremely useful section to disable some linters.
+issues:
+#  fix: true # maybe turn it off, will try
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - dupl
+        - errcheck
+        - errchkjson        # We do not need to check the result of marshaling in tests, if it is incorrect, the test will fail anyway.
+        - forcetypeassert   # It's ok to have some type risks in tests.
+        - funlen            # Tests can be longer than the normal length for a method.
+        - gocyclo
+        - goerr113          # Tests can initialize errors inside the tests, not the package.
+        - gosec             # Security is not make sense in tests.
+        - noctx             # It's ok to do simple http request without context in tests.
+
+    # Exclude varnamelen for faker in tests
+    - source: "f[ ]*[:]?= faker.New()"
+      linters:
+        - varnamelen
+    # Exclude varnamelen for faker in tests
+    - source: "f[ ]*faker.Faker"
+      linters:
+        - varnamelen
+    # Exclude varnamelen for response writer in tests
+    - source: "w[ ]*[:]?= httptest.NewRecorder()"
+      linters:
+        - varnamelen
+    # Exclude varnamelen for cycle counters
+    - source: "for i, .* := .* {"
+      linters:
+        - varnamelen
+
+    # Exclude forcetypeassert issues for stubs and mocks, because it doesn't make sense in tests
+    # We expect that the mocks located inside mocks directory
+    - path: mocks
+      linters:
+        - forcetypeassert
+
+    - path: stubs
+      linters:
+        - forcetypeassert
+
+    # Exclude godox for TODOs that assigned to tasks
+    # Task related TODOs look like this (examples written without TODOs marks):
+    # - (author, #task number) fix comments
+    # - fix something (author, #task number) fix comments
+    # - (author, task link) fix comments
+    # -  fix comments (author, task link)
+    - source: "//.*(.*, #.*).*"
+      linters:
+        - godox
+    - source: "//.*(.*, https://.*).*"
+      linters:
+        - godox
+
+    # Exclude lll issues for long lines with go:generate
+    - source: "^//go:generate "
+      linters:
+        - lll
+
+    # Init and New functions is a glue for service. They can be long, but simple.
+    - source: "Init|New"
+      linters:
+        - funlen
+
+    - path: config/config.go
+      text: "newConfig - result 1 \\(error\\) is always nil"
+      linters:
+        - unparam
+
+    # We allow using zap only in log package.
+    - path: internal/log
+      text: "use of .* forbidden by pattern `zap`"
+      linters:
+        - forbidigo
+
+    # We allow logging.Fatal in main, tests, scripts and generators.
+    - path: main.go|main_test.go|tests|scripts|internal/blueprint/generator/generator.go|build/dockergen.go
+      text: "forbidden by pattern `log.Fatal.*`"
+      linters:
+        - forbidigo
+
+    # We allow to os.Exit in main, tests, scripts and generators.
+    - path: main.go|main_test.go|tests|scripts|internal/blueprint/generator/generator.go|build/dockergen.go
+      text: "forbidden by pattern `os.Exit`"
+      linters:
+        - forbidigo
