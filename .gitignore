@@ -19,8 +19,8 @@
 /build/
 
 # GoLand project files
-/.idea/dictionaries
-/.idea/*.*
+/.idea/*
+!/.idea/codeStyles
 
 # OS service file
 *.DS_Store
