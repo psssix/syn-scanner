@@ -1,6 +1,6 @@
 package reporters
 
-type printer interface {
+type printer interface { //nolint:forbidigo // linter error
 	// Print appends args to the message output.
 	Print(args ...interface{})
 
