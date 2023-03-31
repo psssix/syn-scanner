@@ -1,11 +1,7 @@
-package reporters_test
+package reporters
 
 import (
-	"fmt"
 	"testing"
-
-	"github.com/psssix/syn-scanner/pkg/mocks"
-	"github.com/psssix/syn-scanner/pkg/reporters"
 )
 
 func TestReporterPrints(t *testing.T) {
@@ -16,34 +12,40 @@ func TestReporterPrints(t *testing.T) {
 		target string
 		ports  []int
 	}{
-		{"", "test.local", []int{10}},
-		{"", "127.0.0.1", []int{20, 30}},
-		{"", "test2.local", []int{30, 31, 32, 33}},
+		{`inform about target "test.local" and ports 10`, "test.local", []int{10}},
+		{`inform about target "127.0.0.1" and ports 20 and 30`, "127.0.0.1", []int{20, 30}},
+		{
+			`inform about target "test2.local" and ports 30, 31, 32 and 33`,
+			"test2.local",
+			[]int{30, 31, 32, 33},
+		},
 	}
 
 	for _, test := range tests {
 		test := test
-		test.name = fmt.Sprintf("inform about target %s and ports %v", test.target, test.ports)
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
+			var (
+				opened  = make(chan int, len(test.ports))
+				printer = new(printerMock) //nolint:forbidigo // linter false-positive
+			)
 
-			opened := make(chan int, len(test.ports))
-			printer := new(mocks.Printer)
-			printer.On("Printf", "scanning: %s opened ports: ", []interface{}{test.target})
-			printer.On("Print", []interface{}{"\ndone\n"})
-			for at, port := range test.ports {
+			printer.On("Printf", "scanning %q opened ports is: ", []interface{}{test.target}) //nolint:forbidigo,lll // linter false-positive
+			printer.On("Print", []interface{}{"\ndone\n"})                                    //nolint:forbidigo,lll // linter false-positive
+
+			for i, port := range test.ports {
 				opened <- port
-				if at == 0 {
-					printer.On("Printf", "%d", []interface{}{port})
+				if i == 0 {
+					printer.On("Printf", "%d", []interface{}{port}) //nolint:forbidigo // linter false-positive
 				} else {
-					printer.On("Printf", ", %d", []interface{}{port})
+					printer.On("Printf", ", %d", []interface{}{port}) //nolint:forbidigo // linter false-positive
 				}
 			}
 			close(opened)
 
-			reporters.NewReporter(printer)(test.target, opened)
+			NewReporter(printer)(test.target, opened) //nolint:forbidigo // linter false-positive
 
-			printer.AssertExpectations(t)
+			printer.AssertExpectations(t) //nolint:forbidigo // linter false-positive
 		})
 	}
 }
@@ -51,16 +53,19 @@ func TestReporterPrints(t *testing.T) {
 func TestReporterPrintsWhenNoPortOpen(t *testing.T) {
 	t.Parallel()
 
-	const target = "test.local"
+	var (
+		target  = "test.local"
+		opened  = make(chan int)
+		printer = new(printerMock) //nolint:forbidigo // linter false-positive
+	)
 
-	printer := new(mocks.Printer)
-	printer.On("Printf", "scanning: %s opened ports: ", []interface{}{target})
-	printer.On("Print", []interface{}{"none"})
-	printer.On("Print", []interface{}{"\ndone\n"})
-	opened := make(chan int)
+	printer.On("Printf", "scanning %q opened ports is: ", []interface{}{target}) //nolint:forbidigo,lll // linter false-positive
+	printer.On("Print", []interface{}{"none"})                                   //nolint:forbidigo,lll // linter false-positive
+	printer.On("Print", []interface{}{"\ndone\n"})                               //nolint:forbidigo,lll // linter false-positive
+
 	close(opened)
 
-	reporters.NewReporter(printer)(target, opened)
+	NewReporter(printer)(target, opened) //nolint:forbidigo // linter false-positive
 
-	printer.AssertExpectations(t)
+	printer.AssertExpectations(t) //nolint:forbidigo // linter false-positive
 }

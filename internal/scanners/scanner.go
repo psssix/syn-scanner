@@ -2,16 +2,17 @@ package scanners
 
 import (
 	"sync"
+
+	"github.com/psssix/syn-scanner/pkg/producers"
+	"github.com/psssix/syn-scanner/pkg/reporters"
 )
 
 type (
-	Producer func(ports chan<- int)
-	Worker   func(target string, ports <-chan int, opened chan<- int)
-	Reporter func(target string, opened <-chan int)
-	Scanner  func(target string, threads int)
+	Worker  func(target string, ports <-chan int, opened chan<- int)
+	Scanner func(target string, threads int)
 )
 
-func NewScanner(producer Producer, worker Worker, reporter Reporter) Scanner {
+func NewScanner(producer producers.Producer, worker Worker, reporter reporters.Reporter) Scanner {
 	return func(target string, threads int) {
 		var (
 			waitScanner = sync.WaitGroup{}

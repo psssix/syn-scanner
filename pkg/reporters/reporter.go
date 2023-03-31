@@ -1,28 +1,25 @@
 package reporters
 
-type printer interface { //nolint:forbidigo // linter error
-	// Print appends args to the message output.
-	Print(args ...interface{})
+type Reporter func(target string, opened <-chan int)
 
-	// Printf writes a formatted string.
-	Printf(format string, args ...interface{})
-}
-
-func NewReporter(p printer) func(target string, opened <-chan int) {
+func NewReporter(p printer) Reporter { //nolint:forbidigo // linter false-positive
 	return func(target string, opened <-chan int) {
-		p.Printf("scanning: %s opened ports: ", target)
+		p.Printf("scanning %q opened ports is: ", target)
+
 		firstPrint := true
 		for port := range opened {
 			if firstPrint {
 				p.Printf("%d", port)
-				firstPrint = false
+				firstPrint = false //nolint:wsl // in this case it doesn't make sense
 			} else {
 				p.Printf(", %d", port)
 			}
 		}
+
 		if firstPrint {
 			p.Print("none")
 		}
+
 		p.Print("\ndone\n")
 	}
 }

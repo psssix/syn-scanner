@@ -2,8 +2,6 @@ package producers
 
 import (
 	"fmt"
-
-	"github.com/psssix/syn-scanner/internal/scanners"
 )
 
 const (
@@ -11,7 +9,9 @@ const (
 	MaxPortNumber = 65535
 )
 
-func NewProducer(from, to int) scanners.Producer {
+type Producer func(ports chan<- int)
+
+func NewProducer(from, to int) Producer {
 	if from < MinPortNumber || from > MaxPortNumber || to < MinPortNumber || to > MaxPortNumber {
 		panic(fmt.Sprintf(
 			"invalid ports range, ports can be in range from %d to %d", MinPortNumber, MaxPortNumber,
