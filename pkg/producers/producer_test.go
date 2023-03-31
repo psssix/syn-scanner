@@ -1,9 +1,8 @@
-package producers_test
+package producers
 
 import (
 	"testing"
 
-	"github.com/psssix/syn-scanner/pkg/producers"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -35,7 +34,7 @@ func TestProducerGeneratesRange(t *testing.T) {
 				actual = make([]int, 0, test.to-test.from+1)
 			)
 
-			producers.NewProducer(test.from, test.to)(ports)
+			NewProducer(test.from, test.to)(ports)
 			close(ports)
 
 			for port := range ports {
@@ -66,7 +65,7 @@ func TestNewProducerWithPanicsWhenUsingInvalidPorts(t *testing.T) {
 			t.Parallel()
 			assert.PanicsWithValue(t, "invalid ports range, ports can be in range from 1 to 65535",
 				func() {
-					producers.NewProducer(test.from, test.to)
+					NewProducer(test.from, test.to)
 				},
 			)
 		})
@@ -90,7 +89,7 @@ func TestNewProducerWithPanicsWhenUsingInvalidRange(t *testing.T) {
 			t.Parallel()
 			assert.PanicsWithValue(t, "'to' must be greater than 'from'",
 				func() {
-					producers.NewProducer(test.from, test.to)
+					NewProducer(test.from, test.to)
 				},
 			)
 		})

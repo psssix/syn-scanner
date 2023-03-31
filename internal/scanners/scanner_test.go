@@ -1,11 +1,10 @@
-package scanners_test
+package scanners
 
 import (
 	"sync/atomic"
 	"testing"
 
 	"github.com/jaswdr/faker"
-	"github.com/psssix/syn-scanner/internal/scanners"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -35,7 +34,7 @@ func TestScannerIntegrityWork(t *testing.T) {
 				openedPort = f.Int()
 			)
 
-			scanners.NewScanner(
+			NewScanner(
 				func(ports chan<- int) {
 					producerRunCount.Add(1)
 
