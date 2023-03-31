@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"net"
+	"time"
+
 	"github.com/pkg/errors"
 	"github.com/psssix/syn-scanner/internal/adapters"
 	"github.com/psssix/syn-scanner/internal/scanners"
@@ -8,8 +11,6 @@ import (
 	"github.com/psssix/syn-scanner/pkg/reporters"
 	"github.com/psssix/syn-scanner/pkg/workers"
 	"github.com/spf13/cobra"
-	"net"
-	"time"
 )
 
 var ErrEmptyTarget = errors.New("target is not specified for scanner")
@@ -45,7 +46,7 @@ func scan(cmd *cobra.Command, args []string) error {
 	}
 
 	scanners.NewScanner(
-		producers.NewProducer(),
+		producers.NewProducer(producers.MinPortNumber, producers.MinPortNumber),
 		workers.NewWorker(&net.Dialer{Timeout: dialerTimeout * time.Second}),
 		reporters.NewReporter(adapters.PrinterAdapter{}),
 	)(target, threads)

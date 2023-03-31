@@ -2,12 +2,10 @@ package scanners
 
 import (
 	"sync"
-
-	"github.com/psssix/syn-scanner/pkg/producers"
 )
 
 type (
-	Producer func(from, to int, ports chan<- int)
+	Producer func(ports chan<- int)
 	Worker   func(target string, ports <-chan int, opened chan<- int)
 	Reporter func(target string, opened <-chan int)
 	Scanner  func(target string, threads int)
@@ -30,7 +28,7 @@ func NewScanner(producer Producer, worker Worker, reporter Reporter) Scanner {
 				close(ports)
 				waitScanner.Done()
 			}()
-			producer(producers.MinPortNumber, producers.MaxPortNumber, ports)
+			producer(ports)
 		}()
 
 		waitScanner.Add(1)

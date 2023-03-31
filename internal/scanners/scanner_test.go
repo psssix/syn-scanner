@@ -6,7 +6,6 @@ import (
 
 	"github.com/jaswdr/faker"
 	"github.com/psssix/syn-scanner/internal/scanners"
-	"github.com/psssix/syn-scanner/pkg/producers"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,10 +16,10 @@ func TestScannerIntegrityWork(t *testing.T) {
 		name, target string
 		threads      int
 	}{
-		{"scan test.local with 8 threads", "test.local", 8},
-		{"scan 127.0.0.1 with 16 threads", "127.0.0.1", 16},
-		{"scan 127.0.0.3 with 32 threads", "127.0.0.3", 32},
-		{"scan test2.local with 100000 threads", "test2.local", 100000},
+		{name: "scan test.local with 8 threads", target: "test.local", threads: 8},
+		{name: "scan 127.0.0.1 with 16 threads", target: "127.0.0.1", threads: 16},
+		{name: "scan 127.0.0.3 with 32 threads", target: "127.0.0.3", threads: 32},
+		{name: "scan test2.local with 100000 threads", target: "test2.local", threads: 100000},
 	}
 
 	for _, test := range tests {
@@ -37,11 +36,9 @@ func TestScannerIntegrityWork(t *testing.T) {
 			)
 
 			scanners.NewScanner(
-				func(from, to int, ports chan<- int) {
+				func(ports chan<- int) {
 					producerRunCount.Add(1)
 
-					assert.Equal(t, producers.MinPortNumber, from)
-					assert.Equal(t, producers.MaxPortNumber, to)
 					assert.Equal(t, test.threads, cap(ports))
 
 					for i := 0; i < test.threads; i++ {
