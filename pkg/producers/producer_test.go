@@ -63,11 +63,9 @@ func TestNewProducerWithPanicsWhenUsingInvalidPorts(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
-			assert.PanicsWithValue(t, "invalid ports range, ports can be in range from 1 to 65535",
-				func() {
-					NewProducer(test.from, test.to)
-				},
-			)
+			assert.PanicsWithValue(t, "invalid ports range, ports can be in range from 1 to 65535", func() {
+				NewProducer(test.from, test.to)
+			})
 		})
 	}
 }
@@ -87,11 +85,9 @@ func TestNewProducerWithPanicsWhenUsingInvalidRange(t *testing.T) {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
-			assert.PanicsWithValue(t, "'to' must be greater than 'from'",
-				func() {
-					NewProducer(test.from, test.to)
-				},
-			)
+			assert.PanicsWithValue(t, "'to' must be greater than 'from'", func() {
+				NewProducer(test.from, test.to)
+			})
 		})
 	}
 }

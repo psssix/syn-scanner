@@ -11,10 +11,10 @@ func TestReporterPrints(t *testing.T) {
 		name, target string
 		ports        []int
 	}{
-		{name: `inform about target "test.local" and ports 10`, target: "test.local", ports: []int{10}},
-		{name: `inform about target "127.0.0.1" and ports 20 and 30`, target: "127.0.0.1", ports: []int{20, 30}},
+		{name: `inform about target test.local and ports 10`, target: "test.local", ports: []int{10}},
+		{name: `inform about target 127.0.0.1 and ports 20 and 30`, target: "127.0.0.1", ports: []int{20, 30}},
 		{
-			name:   `inform about target "test2.local" and ports 30, 31, 32 and 33`,
+			name:   `inform about target test2.local and ports 30, 31, 32 and 33`,
 			target: "test2.local",
 			ports:  []int{30, 31, 32, 33},
 		},
