@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
 	"path/filepath"
+
+	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
@@ -19,11 +20,12 @@ func Execute() {
 }
 
 func executableName() string {
-	n, err := os.Executable()
+	executable, err := os.Executable()
 	if err != nil {
 		panic("can't get current executable name")
 	}
-	return filepath.Base(n)
+
+	return filepath.Base(executable)
 }
 
 func handleError(err error) {

@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSynAcKScannerDials(t *testing.T) {
+func TestSynScanDials(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -50,7 +50,7 @@ func TestSynAcKScannerDials(t *testing.T) {
 			}
 			close(ports)
 
-			workers.NewSynAckScanner(dialer)(test.target, ports, opened)
+			workers.NewSynScan(dialer)(test.target, ports, opened)
 			close(opened)
 
 			assertOpenedPorts(t, test.ports, opened)
@@ -74,7 +74,7 @@ func assertOpenedPorts(t *testing.T, expected []int, actual chan int) {
 	assert.Equal(t, expected, actualPorts)
 }
 
-func TestSynAcKScannerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
+func TestSynScanDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 	t.Parallel()
 
 	var (
@@ -117,7 +117,7 @@ func TestSynAcKScannerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 
 	close(ports)
 
-	workers.NewSynAckScanner(dialer)(target, ports, opened)
+	workers.NewSynScan(dialer)(target, ports, opened)
 	close(opened)
 
 	assertOpenedPorts(t, expectedOpened, opened)
@@ -129,7 +129,7 @@ func TestSynAcKScannerDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 
 }
 
-func TestSynAcKScannerPanicsWhenConnectionIsNotClose(t *testing.T) {
+func TestSynScanPanicsWhenConnectionIsNotClose(t *testing.T) {
 	t.Parallel()
 
 	var (
@@ -156,7 +156,7 @@ func TestSynAcKScannerPanicsWhenConnectionIsNotClose(t *testing.T) {
 	dialer.On("Dial", "tcp", address).Return(conn, nil)
 
 	assert.PanicsWithValue(t, "can't close opened connection for test.local:80", func() {
-		workers.NewSynAckScanner(dialer)(target, ports, opened)
+		workers.NewSynScan(dialer)(target, ports, opened)
 	})
 
 	conn.AssertExpectations(t)

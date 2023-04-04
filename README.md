@@ -1,6 +1,5 @@
-# syn-scanner
-Simple SYN/ACK scanner on go.
-Pet project for GoLang skills promotion.
+# port-scanner
+Fast, lightweight, easy-to-use network scanner.
 
 ![icon.png](assets/icon-resized.png)
 
