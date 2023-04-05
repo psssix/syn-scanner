@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSynScanDials(t *testing.T) {
+func TestSYNScanDials(t *testing.T) {
 	t.Parallel()
 
 	tests := []struct {
@@ -50,7 +50,7 @@ func TestSynScanDials(t *testing.T) {
 			}
 			close(ports)
 
-			workers.NewSynScan(dialer)(test.target, ports, opened)
+			workers.NewSYNScan(dialer)(test.target, ports, opened)
 			close(opened)
 
 			assertOpenedPorts(t, test.ports, opened)
@@ -58,6 +58,7 @@ func TestSynScanDials(t *testing.T) {
 			for _, c := range connections {
 				c.AssertExpectations(t)
 			}
+
 			dialer.AssertExpectations(t)
 		})
 	}
@@ -74,7 +75,7 @@ func assertOpenedPorts(t *testing.T, expected []int, actual chan int) {
 	assert.Equal(t, expected, actualPorts)
 }
 
-func TestSynScanDialsAndSomeConnectionIsNotOpen(t *testing.T) {
+func TestSYNScanDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 	t.Parallel()
 
 	var (
@@ -117,7 +118,7 @@ func TestSynScanDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 
 	close(ports)
 
-	workers.NewSynScan(dialer)(target, ports, opened)
+	workers.NewSYNScan(dialer)(target, ports, opened)
 	close(opened)
 
 	assertOpenedPorts(t, expectedOpened, opened)
@@ -125,11 +126,11 @@ func TestSynScanDialsAndSomeConnectionIsNotOpen(t *testing.T) {
 	for _, c := range connections {
 		c.AssertExpectations(t)
 	}
-	dialer.AssertExpectations(t)
 
+	dialer.AssertExpectations(t)
 }
 
-func TestSynScanPanicsWhenConnectionIsNotClose(t *testing.T) {
+func TestSYNScanPanicsWhenConnectionIsNotClose(t *testing.T) {
 	t.Parallel()
 
 	var (
@@ -156,7 +157,7 @@ func TestSynScanPanicsWhenConnectionIsNotClose(t *testing.T) {
 	dialer.On("Dial", "tcp", address).Return(conn, nil)
 
 	assert.PanicsWithValue(t, "can't close opened connection for test.local:80", func() {
-		workers.NewSynScan(dialer)(target, ports, opened)
+		workers.NewSYNScan(dialer)(target, ports, opened)
 	})
 
 	conn.AssertExpectations(t)

@@ -47,7 +47,7 @@ func scan(cmd *cobra.Command, args []string) error {
 
 	scanners.NewScanner(
 		producers.NewProducer(producers.MinPortNumber, producers.MinPortNumber),
-		workers.NewSynScan(&net.Dialer{Timeout: dialerTimeout * time.Second}),
+		workers.NewSYNScan(&net.Dialer{Timeout: dialerTimeout * time.Second}),
 		reporters.NewReporter(adapters.Printer{}),
 	)(target, threads)
 
